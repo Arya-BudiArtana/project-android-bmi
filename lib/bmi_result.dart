@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'about.dart';
 
 class BMIResult extends StatelessWidget {
   BMIResult(
@@ -23,57 +24,40 @@ class BMIResult extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double bmi = berat_badan / pow(tinggi_badan / 100, 2);
+    double rec = 18.5* pow(tinggi_badan / 100, 2);
+    double rec1 = 24.9* pow(tinggi_badan / 100, 2);
+    String rec2 = rec.toStringAsFixed(2);
+    String rec3 = rec1.toStringAsFixed(2);
     int umur = year_now - tahun;
     String cBMI;
-    String normal;
-    String user = nama_user.toLowerCase();
+    String nama = nama_user.toLowerCase();
     String jk = jenis_kelamin.toLowerCase();
-    String rekomendasi;
-    if (jenis_kelamin == "Perempuan") {
-      normal = "18,0 - 25,0";
-      if (bmi > 27) {
-        cBMI = "Obesitas";
-      } else if (bmi > 25 && bmi <= 27) {
-        cBMI = "Kegemukan";
-      } else if (bmi >= 18 && bmi <= 25) {
-        cBMI = "Normal";
-      } else if (bmi < 18) {
-        cBMI = "Kurus";
-      } else {
-        cBMI = "Tak Terdefinisi";
-      }
-    } else if (jenis_kelamin == "Laki-Laki") {
-      normal = "17,0 - 23,0";
-      if (bmi > 27) {
-        cBMI = "Gendut";
-      } else if (bmi > 23 && bmi <= 27) {
-        cBMI = "Kegemukan";
-      } else if (bmi >= 17 && bmi <= 23) {
-        cBMI = "Normal";
-      } else if (bmi < 17) {
-        cBMI = "Kurus";
-      } else {
-        cBMI = "Tak Terdefinisi";
-      }
-    }
-    if (umur < 17) {
-      rekomendasi =
-          "mulai pola hidup sehat, rajin berolahraga, dan makan-makanan yang mengandung banyak serat";
-    } else if (umur >= 17 && umur <= 30) {
-      rekomendasi =
-          "tetap rajin berolaraga, kurangi rutinitas yang tidak perlu, dan makan makanan yang bergizi";
-    } else if (umur > 30 && umur <= 45) {
-      rekomendasi =
-          "aktiflah bergerak, makan makanan yang mengandung kalsium, kurangi stres, dan makanan tetap dijaga";
-    } else {
-      rekomendasi =
-          "kurangi kegiatan yang tidak perlu, perbanyak bergerak, dan makan makanan yang mengandung kalsium";
-    }
+    if (bmi>=30) cBMI="Obese";
+    else if (bmi>=25) cBMI="Overweight";
+    else if (bmi>=18.5) cBMI="Normal";
+    else cBMI="Underweight";
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.orange,
+        backgroundColor: Colors.blue,
         centerTitle: true,
         title: Text('BMI Checker'),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.info_outline,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AboutRoute()),
+              );
+            },
+          ),
+          SizedBox(
+            width: 15,
+          )
+        ],
       ),
       body: Container(
         alignment: Alignment.center,
@@ -81,6 +65,36 @@ class BMIResult extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+
+              Center(
+              child: Container(
+                child: Text(
+                  "$nama",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 66,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.blue,
+                  ),
+                  
+                ),
+              ),
+            ),
+            Center(
+              child: Container(
+                margin: EdgeInsets.all(50.0),
+                child: Text(
+                  "$jk/$umur Tahun",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
+            ),
+
             Text(
               cBMI.toString(),
               style: TextStyle(
@@ -94,39 +108,49 @@ class BMIResult extends StatelessWidget {
               style: TextStyle(
                 fontSize: 100,
                 fontWeight: FontWeight.w800,
-                color: Colors.orange,
+                color: Colors.red[200],
               ),
             ),
             Text(
-              "Rentang Normal",
+              "Normal BMI Range",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w800,
+                color: Colors.blue[800],
+              ),
+            ),
+            Text(
+              "18,5 - 24,9",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w800,
                 color: Colors.orange,
               ),
             ),
-            Text(
-              normal.toString(),
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w800,
-                color: Colors.orange,
-              ),
-            ),
-            Center(
+             Center(
               child: Container(
                 margin: EdgeInsets.all(20.0),
                 child: Text(
-                  "Hai $user, sebagai seorang $jk yang berusia $umur tahun, kamu memiliki nilai Body Mass Index (BMI) dalam rentangan $cBMI. Rekomendasi kami, $rekomendasi",
+                  "Berat badan yang harus anda capai agar BMI Normal adalah:",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 24,
                     fontWeight: FontWeight.w800,
-                    color: Colors.green,
+                    color: Colors.redAccent,
                   ),
+                  
                 ),
               ),
-            )
+            ),
+            
+            Text(
+              "$rec2 Kg - $rec3 Kg",
+              style: TextStyle(
+                fontSize: 37,
+                fontWeight: FontWeight.w800,
+                color: Colors.blue[200],
+              ),
+            ),
           ],
         ),
       ),
